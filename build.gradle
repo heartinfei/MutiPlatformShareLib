@@ -1,0 +1,91 @@
+plugins {
+    id 'kotlin-multiplatform' version '1.3.30'
+}
+repositories {
+    mavenCentral()
+}
+group 'com.example'
+version '0.0.1'
+
+apply plugin: 'maven-publish'
+
+kotlin {
+    //定义编译平台
+    jvm() //使用默认名称
+
+    iosX64("ios") {
+        binaries {
+            framework()
+        }
+    }
+
+    //dynamic for .so
+    //static for .a
+    androidNativeArm64("arm64") {
+        compilations.main.outputKinds("dynamic")
+    }
+
+    androidNativeArm32("arm32") {
+        compilations.main.outputKinds("dynamic")
+    }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation kotlin('stdlib')
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
+            }
+        }
+        iosMain {
+        }
+        iosTest {
+        }
+
+        arm64Main {
+
+        }
+        arm64Test {
+
+        }
+        arm32Main {
+        }
+        arm32Test {
+
+        }
+
+    }
+}
+
+task iosTest {
+    def device = project.findProperty("iosDevice")?.toString() ?: "iPhone 8"
+    dependsOn kotlin.targets.ios.binaries.getExecutable('test', 'DEBUG').linkTaskName
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    description = "Runs tests for target 'ios' on an iOS simulator"
+
+    doLast {
+        def binary = kotlin.targets.ios.binaries.getExecutable('test', 'DEBUG').outputFile
+        exec {
+            commandLine 'xcrun', 'simctl', 'spawn', device, binary.absolutePath
+        }
+    }
+}
+
+configurations {
+    compileClasspath
+}
