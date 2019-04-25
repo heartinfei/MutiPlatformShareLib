@@ -32,7 +32,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation kotlin('stdlib-common')
+                implementation kotlin('stdlib')
             }
         }
         commonTest {
@@ -58,7 +58,6 @@ kotlin {
         }
 
         arm64Main {
-
         }
         arm64Test {
 
