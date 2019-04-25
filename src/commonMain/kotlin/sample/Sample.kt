@@ -23,6 +23,6 @@ fun distance(p1: KPoint, p2: KPoint): Double {
     return sqrt(abs(v1 - v2))
 }
 
-fun middle(p1: KPoint, p2: KPoint): KPoint = KPoint((p1.x + p2.x) / 2, (p2.x + p2.y) / 2)
+fun middle(p1: KPoint, p2: KPoint): KPoint = KPoint((p1.x + p2.x) / 2, (p2.y + p2.y) / 2)
 
-data class KPoint(val x: Double, val y: Double)
+data class KPoint(public val x: Double, public val y: Double)
