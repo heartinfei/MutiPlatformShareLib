@@ -32,7 +32,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation kotlin('stdlib')
+                implementation kotlin('stdlib-common')
             }
         }
         commonTest {
@@ -52,17 +52,27 @@ kotlin {
                 implementation kotlin('test-junit')
             }
         }
+
+        natives{
+            dependencies {
+                implementation kotlin('stdlib')
+            }
+        }
+
         iosMain {
+            dependsOn natives
         }
         iosTest {
         }
 
         arm64Main {
+            dependsOn natives
         }
         arm64Test {
 
         }
         arm32Main {
+            dependsOn natives
         }
         arm32Test {
 
